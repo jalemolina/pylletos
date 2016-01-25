@@ -3,7 +3,7 @@
 #
 #       pylletos-0.2.py
 #
-#       Copyright 2010 Alejandro <ale@ale-laptop>
+#       Copyright 2016 Alejandro Molina <jalemolina arroba gmail dot com>
 #
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 
 import sys
 import os
+import shutil
 import subprocess
 import poppler
 
@@ -89,6 +90,7 @@ def main():
         NumPags = preparar(n_pages%4)
     else:
         NumPags = n_pages
+        shutil.copy(sys.argv[1], 'listo.pdf')
 
 
     cth = NumPags/4
@@ -112,6 +114,7 @@ def main():
     #print comando
     subprocess.call(comando)
     print "\n¡Listo!"
+    os.remove('listo.pdf')
 
     return 0
 
