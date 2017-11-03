@@ -27,7 +27,7 @@ import subprocess
 import poppler
 
 def main():
-    def organizar(pagInicio, pagFinal):
+    def organizar(pagIricio, pagFinal):
         medio = (pagInicio + pagFinal) / 2
         l = []
         while pagFinal > medio:
@@ -39,15 +39,19 @@ def main():
                         pagInicio += 1
                         break
                     pagInicio += 1
-            pagFinal -=1
+            pagFinal -= 1
         return l
 
     def preparar(N):
         #Dicci = "321"
         print "\nAñadiendo páginas en blanco...\n"
-        #comandoUnir = ["pdfjoin", "--outfile", "listo.pdf", sys.argv[1], "enBlanco" + Dicci[N-1] + ".pdf"]
+        #comandoUnir = ["pdfjoin",
+                        #"--outfile",
+                        #"listo.pdf",
+                        #sys.argv[1],
+                        #"enBlanco" + Dicci[N-1] + ".pdf"]
         #subprocess.call(comandoUnir)
-        ######################################################################################################
+        ########################################################################
         if N == 1:
             peb = '{},{},{}'
             peba = 3
@@ -57,7 +61,11 @@ def main():
         elif N == 3:
             peb = '{}'
             peba = 1
-        comandoPagsEnBlanco = ["pdfjam", sys.argv[1], '1-,' + peb, "--outfile", "listo.pdf"]
+        comandoPagsEnBlanco = ["pdfjam",
+                               sys.argv[1],
+                               '1-,' + peb,
+                               "--outfile",
+                               "listo.pdf"]
         #print comandoPagsEnBlanco
         subprocess.call(comandoPagsEnBlanco)
         #return n_pages + int(Dicci[N-1])
@@ -66,7 +74,7 @@ def main():
     print "\nProcesando " + sys.argv[1]
 
     uri = "file://" + os.getcwd() + "/" + sys.argv[1]
-    document = poppler.document_new_from_file (uri, None)
+    document = poppler.document_new_from_file(uri, None)
     n_pages = document.get_n_pages()
     titulo = document.get_properties("title")[0]
     formato = document.get_properties("format")[0]
@@ -86,7 +94,7 @@ def main():
     print "\t=============================================================="
 
 
-    if n_pages%4!=0:
+    if n_pages%4 != 0:
         NumPags = preparar(n_pages%4)
     else:
         NumPags = n_pages
@@ -109,8 +117,22 @@ def main():
     print "\nPAGINAS"
     print c
     print "\nLlamando a PDFJAM...\n"
-    #comando = ["pdfnup", "--nup", "2x1", "--pages", c, "--outfile", sys.argv[1] + "_folleto.pdf", "listo.pdf"]
-    comando = ["pdfjam", "--nup", "2x1", "listo.pdf", c, "--landscape", "--outfile", sys.argv[1] + "_folleto.pdf"]
+    #comando = ["pdfnup",
+               #"--nup",
+               #"2x1",
+               #"--pages",
+               #c,
+               #"--outfile",
+               #sys.argv[1] + "_folleto.pdf",
+               #"listo.pdf"]
+    comando = ["pdfjam",
+               "--nup",
+               "2x1",
+               "listo.pdf",
+               c,
+               "--landscape",
+               "--outfile",
+               sys.argv[1].partition(".")[0] + "_folleto.pdf"]
     #print comando
     subprocess.call(comando)
     print "\n¡Listo!"
@@ -119,9 +141,9 @@ def main():
     return 0
 
 if __name__ == '__main__':
-    if (len(sys.argv)==2):
+    if len(sys.argv) == 2:
         main()
-    elif (len(sys.argv)>2):
+    elif len(sys.argv) > 2:
         print "ERROR: Sobran parámetros\n"
     else:
         print "ERROR: Falta parámetro\n"
