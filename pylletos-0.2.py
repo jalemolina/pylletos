@@ -82,16 +82,16 @@ def main():
     productor = document.get_properties("producer")[0]
     creador = document.get_properties("creator")[0]
 
-    print "\n\t=============================================================="
-    print "\t\t\tINFORMACIÓN DE " + sys.argv[1]
-    print "\t=============================================================="
-    print "\t\tNúmero de páginas: " + str(n_pages)
-    print "\t\tTítulo: " + str(titulo)
-    print "\t\tFormato: " + str(formato)
-    print "\t\tAutor: " + str(autor)
-    print "\t\tProductor: " + str(productor)
-    print "\t\tCreador: " + str(creador)
-    print "\t=============================================================="
+    print "\n".center(80, "=")
+    print ("INFORMACIÓN DE " + sys.argv[1]).center(80, " ")
+    print "\t".center(80, "=")
+    print ("Número de páginas: " + str(n_pages)).ljust(5, " ")
+    print ("Título: " + str(titulo)).ljust(5, " ")
+    print ("Formato: " + str(formato)).ljust(5, " ")
+    print ("Autor: " + str(autor)).ljust(5, " ")
+    print ("Productor: " + str(productor)).ljust(5, " ")
+    print ("Creador: " + str(creador)).ljust(5, " ")
+    print "".center(80, "=")
 
 
     if n_pages%4 != 0:

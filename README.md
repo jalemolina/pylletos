@@ -1,6 +1,6 @@
 Dependencias
 ===========================
 
-pypoppler
-pdflatex (dentro de texlive)
-pdfjam
+* pypoppler
+* pdflatex (dentro de texlive)
+* pdfjam
