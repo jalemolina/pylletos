@@ -19,53 +19,73 @@
 #       along with this program; if not, write to the Free Software
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
+"""
+    File: pylletos.py
+    Author: José Alejandro Molina
+    Email: yourname@email.com
+    Github: https://github.com/yourname
+    Description:
+"""
 
-import sys
 import os
 import shutil
 import subprocess
+import sys
+
 import poppler
 
 
+def organizar(pagina_inicial, pagina_final):
+    """
+    TODO: Docstring de la funcion
+    """
+
+    medio = (pagina_inicial + pagina_final) / 2
+    lista_paginas_organizadas = []
+    while pagina_final > medio:
+        lista_paginas_organizadas.append(pagina_final)
+        if pagina_final % 2 == 0:
+            while pagina_inicial < medio + 1:
+                lista_paginas_organizadas.append(pagina_inicial)
+                if pagina_inicial % 2 == 0:
+                    pagina_inicial += 1
+                    break
+                pagina_inicial += 1
+        pagina_final -= 1
+    return lista_paginas_organizadas
+
+
+def preparar(n_pages):
+    """
+    TODO: Docstring de la funcion
+    """
+
+    paginas_libres = n_pages % 4
+    print "\nAñadiendo páginas en blanco...\n"
+
+    if paginas_libres == 1:
+        peb = '{},{},{}'
+        peba = 3
+    elif paginas_libres == 2:
+        peb = '{},{}'
+        peba = 2
+    elif paginas_libres == 3:
+        peb = '{}'
+        peba = 1
+
+    comando_paginas_en_blanco = ["pdfjam",
+                                 sys.argv[1],
+                                 '1-,' + peb,
+                                 "--outfile",
+                                 "listo.pdf"]
+    subprocess.call(comando_paginas_en_blanco)
+    return n_pages + peba
+
+
 def main():
-
-    def organizar(pagInicio, pagFinal):
-
-        medio = (pagInicio + pagFinal) / 2
-        l = []
-        while pagFinal > medio:
-            l.append(pagFinal)
-            if pagFinal % 2 == 0:
-                while pagInicio < medio + 1:
-                    l.append(pagInicio)
-                    if pagInicio % 2 == 0:
-                        pagInicio += 1
-                        break
-                    pagInicio += 1
-            pagFinal -= 1
-        return l
-
-    def preparar(N):
-
-        print "\nAñadiendo páginas en blanco...\n"
-
-        if N == 1:
-            peb = '{},{},{}'
-            peba = 3
-        elif N == 2:
-            peb = '{},{}'
-            peba = 2
-        elif N == 3:
-            peb = '{}'
-            peba = 1
-
-        comandoPagsEnBlanco = ["pdfjam",
-                               sys.argv[1],
-                               '1-,' + peb,
-                               "--outfile",
-                               "listo.pdf"]
-        subprocess.call(comandoPagsEnBlanco)
-        return n_pages + peba
+    """
+    TODO: Docstring de la funcion
+    """
 
     print "\nProcesando " + sys.argv[1]
 
@@ -90,32 +110,33 @@ def main():
     print "".center(80, "=")
 
     if n_pages % 4 != 0:
-        NumPags = preparar(n_pages % 4)
+        numero_de_paginas = preparar(n_pages)
     else:
-        NumPags = n_pages
+        numero_de_paginas = n_pages
         shutil.copy(sys.argv[1], 'listo.pdf')
 
-    cth = NumPags / 4
-    chxf = 5
-    CantFolletos = cth / chxf
-    cpxf = chxf * 4
-    listafinal = []
+    cantidad_total_hojas = numero_de_paginas / 4
+    cantidad_hojas_por_folleto = 5
+    cantidad_de_folletos = cantidad_total_hojas / cantidad_hojas_por_folleto
+    cantidad_paginas_x_folleto = cantidad_hojas_por_folleto * 4
+    lista_final = []
 
-    for i in range(CantFolletos):
-        listafinal.extend(organizar((1 + i * cpxf), ((i + 1) * cpxf)))
-    if cth % chxf != 0:
-        ultimoA = 1 + CantFolletos * cpxf
-        listafinal.extend(organizar(ultimoA, NumPags))
+    for i in range(cantidad_de_folletos):
+        lista_final.extend(organizar((1 + i * cantidad_paginas_x_folleto),
+                                     ((i + 1) * cantidad_paginas_x_folleto)))
+    if cantidad_total_hojas % cantidad_hojas_por_folleto != 0:
+        ultimo_a = 1 + cantidad_de_folletos * cantidad_paginas_x_folleto
+        lista_final.extend(organizar(ultimo_a, numero_de_paginas))
 
-    c = str(listafinal)[1:-1].replace(" ", "")
+    paginas_ordenadas = str(lista_final)[1:-1].replace(" ", "")
     print "\nPAGINAS"
-    print c
+    print paginas_ordenadas
     print "\nLlamando a PDFJAM...\n"
     comando = ["pdfjam",
                "--nup",
                "2x1",
                "listo.pdf",
-               c,
+               paginas_ordenadas,
                "--landscape",
                "--outfile",
                sys.argv[1].partition(".")[0] + "_folleto.pdf"]
@@ -124,6 +145,7 @@ def main():
     os.remove('listo.pdf')
 
     return 0
+
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
