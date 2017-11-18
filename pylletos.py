@@ -101,7 +101,7 @@ def main():
     print "".center(80, "=")
     print ("INFORMACIÓN DE " + sys.argv[1]).center(80, " ")
     print "".center(80, "=")
-    print ("Número de páginas: " + str(n_pages)).rjust(5, "")
+    print ("Número de páginas: " + str(n_pages)).rjust(5, " ")
     print ("Título: " + str(titulo)).ljust(5, " ")
     print ("Formato: " + str(formato)).ljust(5, " ")
     print ("Autor: " + str(autor)).ljust(5, " ")
@@ -149,7 +149,7 @@ def main():
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
-        main()
+        sys.exit(main())
     elif len(sys.argv) > 2:
         print "ERROR: Sobran parámetros\n"
     else:
