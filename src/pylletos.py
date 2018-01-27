@@ -73,7 +73,7 @@ def main():
     TODO: Docstring de la funcion
     """
 
-    print("\nProcesando " + sys.argv[1])
+    print("\nProcesando " + sys.argv[1] + "\n")
 
     uri = "file://" + os.getcwd() + "/" + sys.argv[1]
     document = Poppler.Document.new_from_file(uri, None)
@@ -84,16 +84,16 @@ def main():
     productor = document.get_properties("producer")[0]
     creador = document.get_properties("creator")[0]
 
-    print("".center(80, "="))
-    print(("INFORMACIÓN DE " + sys.argv[1]).center(80, " "))
-    print("".center(80, "="))
-    print("\tNúmero de páginas: " + str(n_pages))
-    print("\tTítulo: " + str(titulo))
-    print("\tFormato: " + str(formato))
-    print("\tAutor: " + str(autor))
-    print("\tProductor: " + str(productor))
-    print("\tCreador: " + str(creador))
-    print("".center(80, "="))
+    print("    +{:=^70}+".format(""))
+    print("    |{:^70}|".format("INFORMACIÓN DE " + sys.argv[1]))
+    print("    +{:=^70}+".format(""))
+    print("    |{:<70}|".format("       Número de páginas: " + str(n_pages)))
+    print("    |{:<70}|".format("       Título: " + str(titulo)))
+    print("    |{:<70}|".format("       Formato: " + str(formato)))
+    print("    |{:<70}|".format("       Autor: " + str(autor)))
+    print("    |{:<70}|".format("       Productor: " + str(productor)))
+    print("    |{:<70}|".format("       Creador: " + str(creador)))
+    print("    +{:=^70}+".format(""))
 
     if n_pages % 4 != 0:
         numero_de_paginas = preparar(n_pages)
